@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
+               // git 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
+                git branch: 'main', url: 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
+
             }
         }
 
