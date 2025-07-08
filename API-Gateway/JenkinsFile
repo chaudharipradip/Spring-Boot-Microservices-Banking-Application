@@ -2,7 +2,7 @@ pipeline {
     agent any
 
    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['force-release', 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
+        choice(name: 'ENVIRONMENT', choices: ['dev-release', 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
     }
 
     environment {
@@ -11,6 +11,9 @@ pipeline {
     }
 
     stages {
+
+
+
         stage('Checkout') {
             steps {
                // git 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
@@ -19,10 +22,28 @@ pipeline {
             }
         }
 
+        stage('Prepare Version') {
+                    steps {
+                        script {
+                            def versionSuffix = ''
+                            if (params.ENVIRONMENT == 'dev-release') {
+                                versionSuffix = ''         // release version, no suffix
+                            } else {
+                                versionSuffix = 'SNAPSHOT'  // snapshot suffix for others
+                            }
+                            def fullVersion = "${env.BASE_VERSION}-${versionSuffix}"
+                            echo "Setting Maven version to: ${fullVersion}"
+                            sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion}"
+                        }
+                    }
+        }
+
+
+
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn clean deploy -P${params.ENVIRONMENT} -DskipTests"
+                sh "cd API-Gateway && mvn clean deploy -Pdev -DskipTests"
             }
         }
 
