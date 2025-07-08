@@ -2,7 +2,9 @@ pipeline {
     agent any
 
    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev-release', 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy') 
+        
+        choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
     }
 
     environment {
@@ -38,15 +40,18 @@ pipeline {
                     steps {
                         script {
                             def versionSuffix = ''
-                            if (params.ENVIRONMENT == 'dev-release') {
+                            if (params.Type == 'Release') {
+                                versionSuffix = ''         // release version, no suffix
+                                def timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('UTC'))
+                                def buildNumber = env.BUILD_NUMBER ?: '0'
+                                versionSuffix = "-${timestamp}.${buildNumber}"
+                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"
+                            } else {
                                 versionSuffix = ''         // release version, no suffix
                                 def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
                                 def buildNumber = env.BUILD_NUMBER ?: '0'
                                 versionSuffix = "-${timestamp}-${buildNumber}"
-                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"
-                            } else {
-                                versionSuffix = '-SNAPSHOT'  
-                                env.BUILD_VERSION = ${PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
+                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"// snapshot suffix for others
                             }
                             // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
                             echo "Setting Maven version to: ${env.BUILD_VERSION}"
@@ -60,7 +65,7 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -Pdev -DskipTests"
+                sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
             }
         }
 
@@ -69,10 +74,10 @@ pipeline {
 
   post {
             success {
-                echo "Deployment to ${params.ENVIRONMENT} Nexus repo successful."
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.type} Nexus repo successful."
             }
             failure {
-                echo "Deployment to ${params.ENVIRONMENT} failed."
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.type} failed."
             }
         }
 }
