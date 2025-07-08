@@ -2,7 +2,7 @@ pipeline {
     agent any
 
    parameters {
-        choice(name: 'ENVIRONMENT', choices: [force-release, 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
+        choice(name: 'ENVIRONMENT', choices: ['force-release', 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
     }
 
     stages {
