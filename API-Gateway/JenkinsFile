@@ -5,6 +5,11 @@ pipeline {
         choice(name: 'ENVIRONMENT', choices: ['force-release', 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
     }
 
+    environment {
+        BASE_VERSION = '0.0.1'
+        MAVEN_CLI_OPTS = '-B -DskipTests'
+    }
+
     stages {
         stage('Checkout') {
             steps {
