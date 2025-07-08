@@ -20,7 +20,10 @@ pipeline {
             }
         }
 
-        post {
+      
+    }
+
+  post {
             success {
                 echo "Deployment to ${params.ENVIRONMENT} Nexus repo successful."
             }
@@ -28,5 +31,4 @@ pipeline {
                 echo "Deployment to ${params.ENVIRONMENT} failed."
             }
         }
-    }
 }
