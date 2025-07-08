@@ -29,9 +29,9 @@ pipeline {
                             if (params.ENVIRONMENT == 'dev-release') {
                                 versionSuffix = ''         // release version, no suffix
                             } else {
-                                versionSuffix = 'SNAPSHOT'  // snapshot suffix for others
+                                versionSuffix = '-SNAPSHOT'  // snapshot suffix for others
                             }
-                            def fullVersion = "${env.BASE_VERSION}-${versionSuffix}"
+                            def fullVersion = "${env.BASE_VERSION}${versionSuffix}"
                             echo "Setting Maven version to: ${fullVersion}"
                             sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion}"
                         }
