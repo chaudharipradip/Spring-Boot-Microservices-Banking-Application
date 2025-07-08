@@ -62,14 +62,56 @@
 
     <distributionManagement>
              <repository>
-               <id>nexus-releases</id>
+               <id>default-repo</id> <!-- fallback if no profile used -->
                <url>http://localhost:8081/repository/maven-releases/</url>
              </repository>
-             <snapshotRepository>
-               <id>nexus-snapshots</id>
-               <url>http://localhost:8081/repository/maven-snapshots/</url>
-             </snapshotRepository>
-    </distributionManagement>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <distributionManagement>
+        <repository>
+          <id>nexus-dev</id>
+          <url>http://localhost:8081/repository/dev-releases/</url>
+        </repository>
+        <snapshotRepository>
+          <id>nexus-dev-snapshots</id>
+          <url>http://localhost:8081/repository/dev-snapshots/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+
+    <profile>
+      <id>staging</id>
+      <distributionManagement>
+        <repository>
+          <id>nexus-staging</id>
+          <url>http://localhost:8081/repository/staging-releases/</url>
+        </repository>
+        <snapshotRepository>
+          <id>nexus-staging-snapshots</id>
+          <url>http://localhost:8081/repository/staging-snapshots/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+
+    <profile>
+      <id>prod</id>
+      <distributionManagement>
+        <repository>
+          <id>nexus-prod</id>
+          <url>http://localhost:8081/repository/prod-releases/</url>
+        </repository>
+        <snapshotRepository>
+          <id>nexus-prod-snapshots</id>
+          <url>http://localhost:8081/repository/prod-snapshots/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
+         
 
     <build>
         <plugins>
