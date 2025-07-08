@@ -69,6 +69,18 @@
 
   <profiles>
     <profile>
+
+     <profile>
+    <id>force-release</id>
+    <distributionManagement>
+      <repository>
+        <id>nexus-dev</id>
+        <url>http://localhost:8081/repository/dev-releases</url>
+      </repository>
+    </distributionManagement>
+  </profile>
+
+             
       <id>dev</id>
       <distributionManagement>
         <repository>
