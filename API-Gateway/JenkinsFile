@@ -28,7 +28,7 @@ pipeline {
                 script {
                     def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
                     def buildNumber = env.BUILD_NUMBER ?: '0'
-                    env.DYNAMIC_VERSION = "${BASE_VERSION}-${timestamp}-${buildNumber}"
+                    env.DYNAMIC_VERSION = "${PROJECT_VERSION_PREFIX}-${timestamp}-${buildNumber}"
                     echo "Using dynamic version: ${env.DYNAMIC_VERSION}"
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
                                 env.BUILD_VERSION = "${PROJECT_VERSION_PREFIX}-${timestamp}-${buildNumber}"
                             } else {
                                 versionSuffix = '-SNAPSHOT'  
-                                env.BUILD_VERSION = ${env.PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
+                                env.BUILD_VERSION = ${PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
                             }
                             // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
                             echo "Setting Maven version to: ${env.BUILD_VERSION}"
