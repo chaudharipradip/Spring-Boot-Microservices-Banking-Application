@@ -19,5 +19,14 @@ pipeline {
                 sh 'cd API-Gateway && mvn clean deploy -P${params.ENVIRONMENT} -DskipTests'
             }
         }
+
+        post {
+            success {
+                echo "Deployment to ${params.ENVIRONMENT} Nexus repo successful."
+            }
+            failure {
+                echo "Deployment to ${params.ENVIRONMENT} failed."
+            }
+        }
     }
 }
