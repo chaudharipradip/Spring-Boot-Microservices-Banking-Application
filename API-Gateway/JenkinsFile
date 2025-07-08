@@ -43,7 +43,7 @@ pipeline {
                                 def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
                                 def buildNumber = env.BUILD_NUMBER ?: '0'
                                 versionSuffix = "-${timestamp}-${buildNumber}"
-                                env.BUILD_VERSION = "${PROJECT_VERSION_PREFIX}-${timestamp}-${buildNumber}"
+                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"
                             } else {
                                 versionSuffix = '-SNAPSHOT'  
                                 env.BUILD_VERSION = ${PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
