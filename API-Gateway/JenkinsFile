@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build & Deploy') {
             steps {
-                sh 'cd API-Gateway &&   mvn clean deploy -DskipTests'
+                sh 'cd API-Gateway && mvn clean deploy -P${params.ENVIRONMENT} -DskipTests'
             }
         }
     }
