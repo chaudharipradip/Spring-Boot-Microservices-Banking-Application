@@ -2,7 +2,7 @@ pipeline {
     agent any
 
    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy')
+        choice(name: 'ENVIRONMENT', choices: [force-release, 'dev', 'staging', 'prod'], description: 'Select environment to deploy')
     }
 
     stages {
@@ -17,7 +17,7 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh 'cd API-Gateway && mvn clean deploy -Pdev -DskipTests'
+                sh 'cd API-Gateway && mvn clean deploy -P${params.ENVIRONMENT} -DskipTests'
             }
         }
 
