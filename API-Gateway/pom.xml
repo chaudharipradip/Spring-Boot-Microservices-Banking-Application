@@ -13,11 +13,7 @@
   
     <name>API Gateway</name>
     <description>API Gateway</description>
-<version>${project.version.prefix}-${build.number}</version>
-<properties>
- 
-</properties>
-         
+    <version>${project.version.prefix}-${build.number}</version>
     <properties>
         <project.version.prefix>0.0.1</project.version.prefix>
         <build.number>SNAPSHOT</build.number>
