@@ -68,7 +68,7 @@
   </distributionManagement>
 
   <profiles>
-    <profile>
+  
 
      <profile>
     <id>force-release</id>
@@ -80,7 +80,7 @@
     </distributionManagement>
   </profile>
 
-             
+          <profile>     
       <id>dev</id>
       <distributionManagement>
         <repository>
