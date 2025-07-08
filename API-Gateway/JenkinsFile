@@ -6,7 +6,8 @@ pipeline {
     }
 
     environment {
-        BASE_VERSION = '0.0.1'
+        // BASE_VERSION = '0.0.1'
+        PROJECT_VERSION_PREFIX = '0.0.1'
         MAVEN_CLI_OPTS = '-B -DskipTests'
     }
 
@@ -42,12 +43,14 @@ pipeline {
                                 def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
                                 def buildNumber = env.BUILD_NUMBER ?: '0'
                                 versionSuffix = "-${timestamp}-${buildNumber}"
+                                env.BUILD_VERSION = "${PROJECT_VERSION_PREFIX}-${timestamp}-${buildNumber}"
                             } else {
-                                versionSuffix = '-SNAPSHOT'  // snapshot suffix for others
+                                versionSuffix = '-SNAPSHOT'  
+                                env.BUILD_VERSION = ${env.PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
                             }
-                            def fullVersion = "${env.BASE_VERSION}${versionSuffix}"
-                            echo "Setting Maven version to: ${fullVersion}"
-                            sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion} -DgenerateBackupPoms=false"
+                            // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
+                            echo "Setting Maven version to: ${env.BUILD_VERSION}"
+                            // sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion} -DgenerateBackupPoms=false"
                         }
                     }
         }
@@ -57,7 +60,7 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn clean deploy -Pdev -DskipTests"
+                sh "cd API-Gateway && mvn clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dproject.version.prefix=${BASE_VERSION} -Pdev -DskipTests"
             }
         }
 
