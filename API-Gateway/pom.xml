@@ -10,10 +10,17 @@
     </parent>
     <groupId>org.training</groupId>
     <artifactId>apigateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+  
     <name>API Gateway</name>
     <description>API Gateway</description>
+<version>${project.version.prefix}-${build.number}</version>
+<properties>
+ 
+</properties>
+         
     <properties>
+        <project.version.prefix>0.0.1</project.version.prefix>
+        <build.number>SNAPSHOT</build.number>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
     </properties>
