@@ -44,16 +44,12 @@ pipeline {
                                 def buildNumber = env.BUILD_NUMBER ?: '0'
                                 versionSuffix = "-${timestamp}-${buildNumber}"
                                 env.BUILD_VERSION = "${timestamp}-${buildNumber}"
-
-                                def ts = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))  
-                                def fullVersion = "0.0.1-${ts}-${env.BUILD_NUMBER}"
-                                env.DYNAMIC_VERSION = fullVersion
                             } else {
                                 versionSuffix = '-SNAPSHOT'  
-                                env.DYNAMIC_VERSION = ${PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
+                                env.BUILD_VERSION = ${PROJECT_VERSION_PREFIX}${versionSuffix}// snapshot suffix for others
                             }
                             // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
-                            echo "Setting Maven version to: ${env.DYNAMIC_VERSION}"
+                            echo "Setting Maven version to: ${env.BUILD_VERSION}"
                             // sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion} -DgenerateBackupPoms=false"
                         }
                     }
@@ -64,8 +60,7 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn clean deploy -Dproject.version=${DYNAMIC_VERSION} -B -Pdev -DskipTests"
-                // sh "cd API-Gateway && mvn clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_NUMBER} -Pdev -DskipTests"
+                sh "cd API-Gateway && mvn clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_NUMBER} -Pdev -DskipTests"
             }
         }
 

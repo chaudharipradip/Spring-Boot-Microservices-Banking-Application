@@ -13,9 +13,10 @@
   
     <name>API Gateway</name>
     <description>API Gateway</description>
-    <version>${project.version}</version>
+    <version>${project.version.prefix}-${build.number}</version>
     <properties>
-        <project.version>0.0.1-SNAPSHOT</project.version> 
+        <project.version.prefix>0.0.1</project.version.prefix>
+        <build.number>SNAPSHOT</build.number>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
     </properties>
