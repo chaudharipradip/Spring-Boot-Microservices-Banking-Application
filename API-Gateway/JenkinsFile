@@ -60,7 +60,7 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dproject.version.prefix=${env.BUILD_VERSION} -Pdev -DskipTests"
+                sh "cd API-Gateway && mvn clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number==${env.BUILD_VERSION} -Pdev -DskipTests"
             }
         }
 
