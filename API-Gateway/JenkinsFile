@@ -22,12 +22,26 @@ pipeline {
             }
         }
 
+        stage('Generate Timestamped Version') {
+            steps {
+                script {
+                    def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
+                    def buildNumber = env.BUILD_NUMBER ?: '0'
+                    env.DYNAMIC_VERSION = "${BASE_VERSION}-${timestamp}-${buildNumber}"
+                    echo "Using dynamic version: ${env.DYNAMIC_VERSION}"
+                }
+            }
+        }
+
         stage('Prepare Version') {
                     steps {
                         script {
                             def versionSuffix = ''
                             if (params.ENVIRONMENT == 'dev-release') {
                                 versionSuffix = ''         // release version, no suffix
+                                def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
+                                def buildNumber = env.BUILD_NUMBER ?: '0'
+                                versionSuffix = "-${timestamp}-${buildNumber}"
                             } else {
                                 versionSuffix = '-SNAPSHOT'  // snapshot suffix for others
                             }
