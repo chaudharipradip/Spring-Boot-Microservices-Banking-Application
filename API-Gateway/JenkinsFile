@@ -3,7 +3,7 @@ pipeline {
 
    parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy') 
-        
+
         choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
     }
 
@@ -74,10 +74,10 @@ pipeline {
 
   post {
             success {
-                echo "Deployment to ${params.ENVIRONMENT} - ${params.type} Nexus repo successful."
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} Nexus repo successful."
             }
             failure {
-                echo "Deployment to ${params.ENVIRONMENT} - ${params.type} failed."
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} failed."
             }
         }
 }
