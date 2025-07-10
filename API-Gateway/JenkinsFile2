@@ -12,9 +12,7 @@ pipeline {
         PROJECT_VERSION_PREFIX = '0.0.1'
         MAVEN_CLI_OPTS = '-B -DskipTests'
         
-               // Inject credentials from Jenkins Credentials store
-	    NEXUS_DEV_USER = credentials('nexus-dev-user')
-	    NEXUS_DEV_PASS = credentials('nexus-dev-pass')
+
     }
 
     stages {
