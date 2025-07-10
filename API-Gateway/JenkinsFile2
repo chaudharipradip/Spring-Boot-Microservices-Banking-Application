@@ -4,7 +4,7 @@ pipeline {
    parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev','qa', 'staging', 'prod'], description: 'Select environment to deploy') 
 
-        choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
+        choice(name: 'Type', choices: ['Snapshot', 'Release'], description: 'Select Build Type')
     }
 
     environment {
