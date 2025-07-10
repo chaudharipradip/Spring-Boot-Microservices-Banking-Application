@@ -30,7 +30,7 @@ pipeline {
       steps {
         script {
           def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
-          def buildNumber = env.BUILD_NUMBER ? : '0'
+          def buildNumber = env.BUILD_NUMBER ?: '0'
           env.DYNAMIC_VERSION = "${timestamp}-${buildNumber}"
           echo "Using dynamic version: ${env.DYNAMIC_VERSION}"
         }
@@ -44,13 +44,13 @@ pipeline {
           if (params.Type == 'Release') {
             versionSuffix = '' // release version, no suffix
             def timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('UTC'))
-            def buildNumber = env.BUILD_NUMBER ? : '0'
+            def buildNumber = env.BUILD_NUMBER ?: '0'
             versionSuffix = "-${timestamp}.${buildNumber}"
             env.BUILD_VERSION = "${timestamp}-${buildNumber}"
           } else {
             versionSuffix = '' // release version, no suffix
             def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
-            def buildNumber = env.BUILD_NUMBER ? : '0'
+            def buildNumber = env.BUILD_NUMBER ?: '0'
             versionSuffix = "-${timestamp}-${buildNumber}"
             env.BUILD_VERSION = "${timestamp}-${buildNumber}" // snapshot suffix for others
           }
