@@ -77,11 +77,11 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus-dev</id>
+			<id>nexus-${env}</id>
 			<url>${deploy.repo.url}</url>
 		</repository>
 		<snapshotRepository>
-			<id>nexus-snapshot</id>
+			<id>nexus-${env}</id>
 			<url>${deploy.snapshot.url}</url>
 		</snapshotRepository>
 	</distributionManagement>
