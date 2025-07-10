@@ -2,7 +2,7 @@ pipeline {
     agent any
 
    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy') 
+        choice(name: 'ENVIRONMENT', choices: ['dev','qa', 'staging', 'prod'], description: 'Select environment to deploy') 
 
         choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
     }
@@ -11,6 +11,10 @@ pipeline {
         // BASE_VERSION = '0.0.1'
         PROJECT_VERSION_PREFIX = '0.0.1'
         MAVEN_CLI_OPTS = '-B -DskipTests'
+        
+               // Inject credentials from Jenkins Credentials store
+	    NEXUS_DEV_USER = credentials('nexus-dev-user')
+	    NEXUS_DEV_PASS = credentials('nexus-dev-pass')
     }
 
     stages {
@@ -65,7 +69,11 @@ pipeline {
         stage('Build & Deploy') {
             steps {
      
-                sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
+     	configFileProvider([configFile(fileId: 'maven-settings-devops', variable: 'MAVEN_SETTINGS')]) {
+				sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests -Ddeploy.snapshot.url=http://localhost:8081/repository/qa-snapshots -Ddeploy.repo.url=http://localhost:8081/repository/qa-releases"
+			}
+     
+                //sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
             }
         }
 
