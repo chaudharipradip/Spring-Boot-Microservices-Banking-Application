@@ -77,7 +77,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus-repo</id>
+			<id>nexus-dev</id>
 			<url>${deploy.repo.url}</url>
 		</repository>
 		<snapshotRepository>
