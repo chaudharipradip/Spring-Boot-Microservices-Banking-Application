@@ -68,10 +68,10 @@ pipeline {
             steps {
      
      //	configFileProvider([configFile(fileId: 'maven-settings-devops', variable: 'MAVEN_SETTINGS')]) {
-				sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests -Ddeploy.snapshot.url=http://localhost:8081/repository/qa-snapshots -Ddeploy.repo.url=http://localhost:8081/repository/qa-releases"
+			//2	sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests -Ddeploy.snapshot.url=http://localhost:8081/repository/qa-snapshots -Ddeploy.repo.url=http://localhost:8081/repository/qa-releases"
 		//	}
-     
-                //sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
+     			sh "cd API-Gateway && mvn -B clean deploy -s /etc/maven/settings_profile.xml -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
+                //1 sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
             }
         }
 
