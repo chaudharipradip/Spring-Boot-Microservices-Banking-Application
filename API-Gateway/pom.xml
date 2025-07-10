@@ -68,68 +68,14 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<!--<distributionManagement>
+	<!--1<distributionManagement>
 		<repository>
 			<id>default-repo</id>  fallback if no profile used 
 			<url>http://localhost:8081/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>-->
-
-	<distributionManagement>
-		<repository>
-			<id>nexus-${env}</id>
-			<url>${deploy.repo.url}</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus-${env}</id>
-			<url>${deploy.snapshot.url}</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<env>dev</env>
-				<deploy.repo.url>
-					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
-				<deploy.snapshot.url>
-					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
-			</properties>
-		</profile>
-		<profile>
-			<id>qa</id>
-			<properties>
-				<env>qa</env>
-				<deploy.repo.url>
-					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
-				<deploy.snapshot.url>
-					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
-			</properties>
-		</profile>
-		<profile>
-			<id>staging</id>
-			<properties>
-				<env>staging</env>
-				<deploy.repo.url>
-					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
-				<deploy.snapshot.url>
-					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<env>prod</env>
-				<deploy.repo.url>
-					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
-				<deploy.snapshot.url>
-					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
-			</properties>
-		</profile>
-	</profiles>
-
-	<!--
+	
+	<!--1
 	<profiles>
 
 		<profile>
@@ -186,6 +132,73 @@
 	</profiles>
 -->
 
+
+	<!--2<distributionManagement>
+		<repository>
+			<id>nexus-${env}</id>
+			<url>${deploy.repo.url}</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-${env}</id>
+			<url>${deploy.snapshot.url}</url>
+		</snapshotRepository>
+	</distributionManagement> -->
+	<!--2
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<env>qa</env>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>staging</id>
+			<properties>
+				<env>staging</env>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+	</profiles>-->
+
+
+	  <distributionManagement>
+	    <repository>
+	      <id>nexus-deploy</id>
+	      <url>${deploy.repo.url}</url>
+	    </repository>
+	    <snapshotRepository>
+	      <id>nexus-deploy</id>
+	      <url>${deploy.snapshot.url}</url>
+	    </snapshotRepository>
+	  </distributionManagement>
+	
 	<build>
 		<plugins>
 			<plugin>
