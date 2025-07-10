@@ -11,9 +11,6 @@ pipeline {
     // BASE_VERSION = '0.0.1'
     PROJECT_VERSION_PREFIX = '0.0.1'
     MAVEN_CLI_OPTS = '-B -DskipTests'
-       // Inject credentials from Jenkins Credentials store
-    NEXUS_DEV_USER = credentials('nexus-dev-user')
-    NEXUS_DEV_PASS = credentials('nexus-dev-pass')
   }
 
   stages {
@@ -63,10 +60,8 @@ pipeline {
 
     stage('Build & Deploy') {
       steps {
-			configFileProvider([configFile(fileId: 'maven-settings-devops', variable: 'MAVEN_SETTINGS')]) {
-				sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
-			}
-        //sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
+
+        sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
       }
     }
 

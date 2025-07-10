@@ -1,140 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.14</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>org.training</groupId>
-    <artifactId>apigateway</artifactId>
-  
-    <name>API Gateway</name>
-    <description>API Gateway</description>
-    <version>${project.version.prefix}-${build.number}</version>
-    <properties>
-        <project.version.prefix>0.0.1</project.version.prefix>
-        <build.number>SNAPSHOT</build.number>
-        <java.version>17</java.version>
-        <spring-cloud.version>2021.0.8</spring-cloud.version>
-    </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-    </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.14</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.training</groupId>
+	<artifactId>apigateway</artifactId>
 
-    <distributionManagement>
-             <repository>
-               <id>default-repo</id> <!-- fallback if no profile used -->
-               <url>http://localhost:8081/repository/maven-releases/</url>
-             </repository>
-  </distributionManagement>
+	<name>API Gateway</name>
+	<description>API Gateway</description>
+	<version>${project.version.prefix}-${build.number}</version>
+	<properties>
+		<project.version.prefix>0.0.1</project.version.prefix>
+		<build.number>SNAPSHOT</build.number>
+		<java.version>17</java.version>
+		<spring-cloud.version>2021.0.8</spring-cloud.version>
+		<deploy.repo.url>http://localhost:8081/repository/dev-releases/</deploy.repo.url> <!--
+		Default fallback -->
+		<deploy.snapshot.url>http://localhost:8081/repository/dev-snapshots/</deploy.snapshot.url>
 
-  <profiles>
-  
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-     <profile>
-    <id>force-release</id>
-    <distributionManagement>
-      <repository>
-        <id>nexus-dev</id>
-        <url>http://localhost:8081/repository/dev-releases</url>
-      </repository>
-    </distributionManagement>
-  </profile>
+	<!--<distributionManagement>
+		<repository>
+			<id>default-repo</id>  fallback if no profile used 
+			<url>http://localhost:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>-->
 
-          <profile>     
-      <id>dev</id>
-      <distributionManagement>
-        <repository>
-          <id>nexus-dev</id>
-          <url>http://localhost:8081/repository/dev-releases/</url>
-        </repository>
-        <snapshotRepository>
-          <id>nexus-dev-snapshots</id>
-          <url>http://localhost:8081/repository/dev-snapshots/</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
+	<distributionManagement>
+		<repository>
+			<id>nexus-repo</id>
+			<url>${deploy.repo.url}</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshot</id>
+			<url>${deploy.snapshot.url}</url>
+		</snapshotRepository>
+	</distributionManagement>
 
-    <profile>
-      <id>staging</id>
-      <distributionManagement>
-        <repository>
-          <id>nexus-staging</id>
-          <url>http://localhost:8081/repository/staging-releases/</url>
-        </repository>
-        <snapshotRepository>
-          <id>nexus-staging-snapshots</id>
-          <url>http://localhost:8081/repository/staging-snapshots/</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<deploy.repo.url>http://localhost:8081/repository/dev-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/dev-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<deploy.repo.url>http://localhost:8081/repository/qa-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/qa-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>staging</id>
+			<properties>
+				<deploy.repo.url>
+					http://localhost:8081/repository/staging-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/staging-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<deploy.repo.url>http://localhost:8081/repository/prod-releases/</deploy.repo.url>
+				<deploy.snapshot.url>
+					http://localhost:8081/repository/prod-snapshots/</deploy.snapshot.url>
+			</properties>
+		</profile>
+	</profiles>
 
-    <profile>
-      <id>prod</id>
-      <distributionManagement>
-        <repository>
-          <id>nexus-prod</id>
-          <url>http://localhost:8081/repository/prod-releases/</url>
-        </repository>
-        <snapshotRepository>
-          <id>nexus-prod-snapshots</id>
-          <url>http://localhost:8081/repository/prod-snapshots/</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
-  </profiles>
+	<!--
+	<profiles>
 
-         
+		<profile>
+			<id>force-release</id>
+			<distributionManagement>
+				<repository>
+					<id>nexus-dev</id>
+					<url>http://localhost:8081/repository/dev-releases</url>
+				</repository>
+			</distributionManagement>
+		</profile>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+		<profile>
+			<id>dev</id>
+			<distributionManagement>
+				<repository>
+					<id>nexus-dev</id>
+					<url>http://localhost:8081/repository/dev-releases/</url>
+				</repository>
+				<snapshotRepository>
+					<id>nexus-dev-snapshots</id>
+					<url>http://localhost:8081/repository/dev-snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+
+		<profile>
+			<id>staging</id>
+			<distributionManagement>
+				<repository>
+					<id>nexus-staging</id>
+					<url>http://localhost:8081/repository/staging-releases/</url>
+				</repository>
+				<snapshotRepository>
+					<id>nexus-staging-snapshots</id>
+					<url>http://localhost:8081/repository/staging-snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<distributionManagement>
+				<repository>
+					<id>nexus-prod</id>
+					<url>http://localhost:8081/repository/prod-releases/</url>
+				</repository>
+				<snapshotRepository>
+					<id>nexus-prod-snapshots</id>
+					<url>http://localhost:8081/repository/prod-snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+-->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
