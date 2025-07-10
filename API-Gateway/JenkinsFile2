@@ -1,78 +1,83 @@
 pipeline {
-  agent any
+    agent any
 
-  parameters {
-    choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy')
+   parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select environment to deploy') 
 
-    choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
-  }
-
-  environment {
-    // BASE_VERSION = '0.0.1'
-    PROJECT_VERSION_PREFIX = '0.0.1'
-    MAVEN_CLI_OPTS = '-B -DskipTests'
-  }
-
-  stages {
-
-    stage('Checkout') {
-      steps {
-        // git 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
-        git branch: 'main', url: 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
-
-      }
+        choice(name: 'Type', choices: ['Normal', 'Release'], description: 'Select Build Type')
     }
 
-    stage('Generate Timestamped Version') {
-      steps {
-        script {
-          def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
-          def buildNumber = env.BUILD_NUMBER ? : '0'
-          env.DYNAMIC_VERSION = "${timestamp}-${buildNumber}"
-          echo "Using dynamic version: ${env.DYNAMIC_VERSION}"
+    environment {
+        // BASE_VERSION = '0.0.1'
+        PROJECT_VERSION_PREFIX = '0.0.1'
+        MAVEN_CLI_OPTS = '-B -DskipTests'
+    }
+
+    stages {
+
+
+
+        stage('Checkout') {
+            steps {
+               // git 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
+                git branch: 'main', url: 'https://github.com/chaudharipradip/Spring-Boot-Microservices-Banking-Application.git'
+
+            }
         }
-      }
-    }
 
-    stage('Prepare Version') {
-      steps {
-        script {
-          def versionSuffix = ''
-          if (params.Type == 'Release') {
-            versionSuffix = '' // release version, no suffix
-            def timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('UTC'))
-            def buildNumber = env.BUILD_NUMBER ? : '0'
-            versionSuffix = "-${timestamp}.${buildNumber}"
-            env.BUILD_VERSION = "${timestamp}-${buildNumber}"
-          } else {
-            versionSuffix = '' // release version, no suffix
-            def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
-            def buildNumber = env.BUILD_NUMBER ? : '0'
-            versionSuffix = "-${timestamp}-${buildNumber}"
-            env.BUILD_VERSION = "${timestamp}-${buildNumber}" // snapshot suffix for others
-          }
-          // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
-          echo "Setting Maven version to: ${env.BUILD_VERSION}"
-          // sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion} -DgenerateBackupPoms=false"
+        stage('Generate Timestamped Version') {
+            steps {
+                script {
+                    def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
+                    def buildNumber = env.BUILD_NUMBER ?: '0'
+                    env.DYNAMIC_VERSION = "${timestamp}-${buildNumber}"
+                    echo "Using dynamic version: ${env.DYNAMIC_VERSION}"
+                }
+            }
         }
-      }
+
+        stage('Prepare Version') {
+                    steps {
+                        script {
+                            def versionSuffix = ''
+                            if (params.Type == 'Release') {
+                                versionSuffix = ''         // release version, no suffix
+                                def timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('UTC'))
+                                def buildNumber = env.BUILD_NUMBER ?: '0'
+                                versionSuffix = "-${timestamp}.${buildNumber}"
+                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"
+                            } else {
+                                versionSuffix = ''         // release version, no suffix
+                                def timestamp = new Date().format("yyyyMMdd.HHmmss", TimeZone.getTimeZone('UTC'))
+                                def buildNumber = env.BUILD_NUMBER ?: '0'
+                                versionSuffix = "-${timestamp}-${buildNumber}"
+                                env.BUILD_VERSION = "${timestamp}-${buildNumber}"// snapshot suffix for others
+                            }
+                            // def fullVersion = "${env.PROJECT_VERSION_PREFIX}${versionSuffix}"
+                            echo "Setting Maven version to: ${env.BUILD_VERSION}"
+                            // sh "cd API-Gateway && mvn versions:set -DnewVersion=${fullVersion} -DgenerateBackupPoms=false"
+                        }
+                    }
+        }
+
+
+
+        stage('Build & Deploy') {
+            steps {
+     
+                sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
+            }
+        }
+
+      
     }
-
-    stage('Build & Deploy') {
-      steps {
-
-        sh "cd API-Gateway && mvn -B clean deploy -Dproject.version.prefix=${PROJECT_VERSION_PREFIX} -Dbuild.number=${env.BUILD_VERSION} -P${params.ENVIRONMENT} -DskipTests"
-      }
-    }
-
-  }
 
   post {
-    success {
-      echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} Nexus repo successful."
-    }
-    failure {
-      echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} failed."
-    }
-  }
+            success {
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} Nexus repo successful."
+            }
+            failure {
+                echo "Deployment to ${params.ENVIRONMENT} - ${params.Type} failed."
+            }
+        }
 }
