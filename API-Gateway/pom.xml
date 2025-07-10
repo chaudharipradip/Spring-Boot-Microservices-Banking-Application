@@ -91,38 +91,40 @@
 			<id>dev</id>
 			<properties>
 				<env>dev</env>
-				<deploy.repo.url>http://localhost:8081/repository/dev-releases/</deploy.repo.url>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
 				<deploy.snapshot.url>
-					http://localhost:8081/repository/dev-snapshots/</deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
 			</properties>
 		</profile>
 		<profile>
 			<id>qa</id>
 			<properties>
 				<env>qa</env>
-				<deploy.repo.url>http://localhost:8081/repository/qa-releases/</deploy.repo.url>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
 				<deploy.snapshot.url>
-					http://localhost:8081/repository/qa-snapshots/</deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
 			</properties>
 		</profile>
 		<profile>
-
 			<id>staging</id>
 			<properties>
 				<env>staging</env>
 				<deploy.repo.url>
-					http://localhost:8081/repository/staging-releases/</deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
 				<deploy.snapshot.url>
-					http://localhost:8081/repository/staging-snapshots/</deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
 			</properties>
 		</profile>
 		<profile>
 			<id>prod</id>
 			<properties>
 				<env>prod</env>
-				<deploy.repo.url>http://localhost:8081/repository/prod-releases/</deploy.repo.url>
+				<deploy.repo.url>
+					http://localhost:8081/repository/${env}-releases/</deploy.repo.url>
 				<deploy.snapshot.url>
-					http://localhost:8081/repository/prod-snapshots/</deploy.snapshot.url>
+					http://localhost:8081/repository/${env}-snapshots/</deploy.snapshot.url>
 			</properties>
 		</profile>
 	</profiles>
